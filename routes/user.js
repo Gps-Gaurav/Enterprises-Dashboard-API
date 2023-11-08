@@ -14,7 +14,7 @@ router.post("/signup", (req, res) => {
     if (!err) {
       if (results.length <= 0) {
         query =
-          "insert into user (name,contactNumber,email,password,status,role) values (?,?,?,?, 'true', 'user');"  
+          "insert into user (name,contactNumber,email,password,status,role) values (?,?,?,?, 'true', 'user');";
         connection.query(
           query,
           [(user.name, user.contactNumber, user.email, user.password)],
@@ -97,12 +97,28 @@ router.post("/forgotPassword", (req, res) => {
           }
         });
 
-        return res.status(200).json({ message: "password sent successfully to your email" });
+        return res
+          .status(200)
+          .json({ message: "password sent successfully to your email" });
       }
     } else {
       return res.status(500).json(err);
     }
   });
 });
+
+router.get("./get", (req, res) => {
+  var query =
+    "select id, name,email,contactNumber,status from user role 'user'";
+  connection.query(query, (err, results) => {
+    if (!err) {
+      return res.status(200).json(results);
+    } else {
+      return res.status(500).json(err);
+    }
+  });
+});
+
+router.patch('')
 
 module.exports = router;
