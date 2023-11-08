@@ -14,7 +14,7 @@ router.post("/signup", (req, res) => {
     if (!err) {
       if (results.length <= 0) {
         query =
-          "insert into user (name,contactNumber,email,password,status,role) values ('pratap','8192091736','pratap@gmail.com','456123','true', 'admin');";
+          "insert into user (name,contactNumber,email,password,status,role) values (?,?,?,?, 'true', 'user');"  
         connection.query(
           query,
           [(user.name, user.contactNumber, user.email, user.password)],
