@@ -87,15 +87,17 @@ router.post("/forgotPassword", (req, res) => {
           from: process.env.EMAIL,
           TO: results[0].email,
           subject: "Password  by cafe management system",
-          html: " <p>you loginn details for cafe management system</p> <br> <b> '+results[0].email+'</b><br><b>password : </b><b>'+results[0].password+'</b",
+          html: " <p>you loginn details for cafe management system</p> <br>'<b>email : ' +results[0].email+ '</b><br><b>password : </b><b>'+results[0].password+</b  href='http//localhost4200 '",
         };
         transporter.sendMail(mailOptions, function (error, info) {
-          if (err) {
+          if (error) {
             console.log(error);
           } else {
             console.log("email sent :" + info.response);
           }
         });
+
+        return res.status(200).json({ message: "password sent successfully to your email" });
       }
     } else {
       return res.status(500).json(err);
