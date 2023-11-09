@@ -9,6 +9,7 @@ require("dotenv").config();
 var auth = require("../services/authentication");
 var checkRole = require("../services/checkRole");
 
+
 router.post("/signup", (req, res) => {
   let user = req.body;
   query = "select email, password, role, status from user where email=?";
@@ -39,18 +40,19 @@ router.post("/signup", (req, res) => {
   });
 });
 
+
 router.post("/login", (req, res) => {
   const user = req.body;
   query = "select email,password,role,status from user where email=?";
   connection.query(query, [user.email], (err, results) => {
     if (!err) {
       if (results.length <= 0 || results[0].password != user.password) {
-        return res
-          .status(401)
-          .json({ message: "incorrect username and password" });
-      } else if (results[0].status === "false") {
+        return res.status(401).json({ message: "incorrect username and password" });
+      }
+      else if (results[0].status === "false") {
         return res.status(401).json({ message: "wait for admin approval" });
-      } else if (results[0].password == user.password) {
+      }
+      else if (results[0].password == user.password) {
         const response = { email: results[0].email, role: results[0].role };
         const accessToken = jwt.sign(response, process.env.ACCESS_TOKEN, {
           expiresIn: "8h",
@@ -67,6 +69,7 @@ router.post("/login", (req, res) => {
   });
 });
 
+
 var transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -74,6 +77,7 @@ var transporter = nodemailer.createTransport({
     pass: process.env.PASSWORD,
   },
 });
+
 
 router.post("/forgotPassword", (req, res) => {
   const user = req.body;
@@ -109,6 +113,7 @@ router.post("/forgotPassword", (req, res) => {
   });
 });
 
+
 router.get("/get", auth.authenticateToken, checkRole.checkRole, (req, res) => {
   var query =
     "select id,name,email,contactNumber,status from user where role='admin'";
@@ -121,39 +126,31 @@ router.get("/get", auth.authenticateToken, checkRole.checkRole, (req, res) => {
   });
 });
 
-router.patch(
-  "/update",
-  auth.authenticateToken,
-  checkRole.checkRole,
-  (req, res) => {
-    let user = req.body;
-    var query = "update user set status=?";
-    connection.query(query, [user.status], (err, results) => {
-      if (!err) {
-        if (results.affectedRows == 0) {
-          return res.status(404).json({ message: "user id not found" });
-        }
-        return res.status(200).json({ message: "user updated successfully" });
-      } else {
-        return res.status(500).json(err);
+
+router.patch("/update", auth.authenticateToken, checkRole.checkRole, (req, res) => {
+  let user = req.body;
+  var query = "update user set status=?";
+  connection.query(query, [user.status], (err, results) => {
+    if (!err) {
+      if (results.affectedRows == 0) {
+        return res.status(404).json({ message: "user id not found" });
       }
-    });
-  }
+      return res.status(200).json({ message: "user updated successfully" });
+    } else {
+      return res.status(500).json(err);
+    }
+  });
+}
 );
 
-router.get(
-  "/checkToken",
-  auth.authenticateToken,
-  checkRole.checkRole,
-  (req, res) => {
-    return res.status(200).json({ message: "true" });
-  }
+
+router.get("/checkToken", auth.authenticateToken, checkRole.checkRole, (req, res) => {
+  return res.status(200).json({ message: "true" });
+}
 );
 
-router.post(
-  "/changePassword",
-  auth.authenticateToken,
-  checkRole.checkRole,
+
+router.post("/changePassword", auth.authenticateToken, checkRole.checkRole,
   (req, res) => {
     const user = req.body;
     const email = res.locals.email;
@@ -184,5 +181,6 @@ router.post(
     });
   }
 );
+
 
 module.exports = router;
