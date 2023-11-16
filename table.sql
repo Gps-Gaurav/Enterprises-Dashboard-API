@@ -9,7 +9,7 @@ create table user(
     UNIQUE (email)
 
 );
-insert into user (name,contactNumber,email,password,status,role) values ('Admin', '123456434', 'admin@gmail.com', '123456','true', 'admin');
+insert into user (name,contactNumber,email,password,status,role) values ('gps', '123456434', 'gps@gmail.com', '123456','true', 'user');
 
 create table category (
     id int NOT NULL AUTO_INCREMENT,
