@@ -9,6 +9,7 @@ create table user(
     UNIQUE (email)
 
 );
+
 insert into user (name,contactNumber,email,password,status,role) values ('gps', '123456434', 'gps@gmail.com', '123456','true', 'user');
 
 create table category (
