@@ -38,7 +38,7 @@ router.get('/details', auth.authenticateToken, (req, res, next) => {
             billCount = results[0].billCount;
             var data = {
                 category: categoryCount,
-                prduct: productCount,
+                product: productCount,
                 bill: billCount
             }
             return res.status(200).json(data);
