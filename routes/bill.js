@@ -8,7 +8,7 @@ var fs = require('fs');
 var uuid = require('uuid');
 var auth = require('../services/authentication');
 
-router.post('/generateReport', auth.authenticateToken, (req, res, next) => {
+router.post('/generateReport', auth.authenticateToken, (req, res) => {
     const generatedUuid = uuid.v1();
     const orderDetails = req.body;
     var productdetailsReport = JSON.parse(orderDetails.productDetails);
@@ -27,7 +27,7 @@ router.post('/generateReport', auth.authenticateToken, (req, res, next) => {
                         return res.status(500).json(err);
                     }
                     else {
-                        pdf.create(results).toFile('./generated_pdf/' + orderDetails.uuid + ".pdf", function (err, data) {
+                        pdf.create(results).toFile('./generated_pdf/' + generatedUuid + ".pdf", function (err, data) {
                             if (err) {
                                 console.log(err);
                                 return res.status(500).json(err);
