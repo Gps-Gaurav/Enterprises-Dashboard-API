@@ -16,10 +16,8 @@ router.post("/signup", (req, res) => {
   connection.query(query, [user.email], (err, results) => {
     if (!err) {
       if (results.length <= 0) {
-        query = "insert into user (name,contactNumber,email,password,status,role) values (?,?,?,?, 'true', 'user')";
-        connection.query(
-          query,
-          [(user.name, user.contactNumber, user.email, user.password)],
+        query = "insert into user(name,contactNumber,email,password,status,role) values (?,?,?,?, 'false', 'user')";
+        connection.query(query,[user.name, user.contactNumber, user.email, user.password],
           (err, results) => {
             if (!err) {
               return res
@@ -31,7 +29,7 @@ router.post("/signup", (req, res) => {
           }
         );
       } else {
-        return res.status(400).json({ message: "emsil already exists" });
+        return res.status(400).json({ message: "email already exists" });
       }
     } else {
       return res.status(500).json(err);
