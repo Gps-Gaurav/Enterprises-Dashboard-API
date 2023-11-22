@@ -10,7 +10,7 @@ create table user(
 
 );
 
-insert into user (name,contactNumber,email,password,status,role) values ('gps', '123456434', 'gps@gmail.com', '123456','true', 'user');
+insert into user (name,contactNumber,email,password,status,role) values ('Gaurav', '8192094736', 'gaurav@gmail.com', '123456','true', 'admin');
 
 create table category (
     id int NOT NULL AUTO_INCREMENT,
