@@ -34,6 +34,22 @@ router.get('/get', auth.authenticateToken,(req, res, next)=>{
     })
 })
 
+router.delete('/delete/:id', auth.authenticateToken, checkRole.checkRole, (req, res, next) => {
+    const id = req.params.id;
+    var query = "delete from category where id=?";
+    connection.query(query, [id], (err, results) => {
+        if (!err) {
+            if (results.affectedRow == 0) {
+                return res.status(404).json({ message: "category id does not exist" });
+            }
+            return res.status(200).json({ message: "category delete successfully" });
+        }
+        else {
+            return res.status(500).json(err);
+        }
+    });
+});
+
 router.patch('/update', auth.authenticateToken,checkRole.checkRole,(req,res,next)=>{
     let product = req.body;
     var query = "update category set name =? where id =?";
