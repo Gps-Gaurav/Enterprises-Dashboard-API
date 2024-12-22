@@ -24,23 +24,7 @@ app.use('/product',productRoute);
 app.use('/bill',billRoute);
 app.use('/dashboard',dashboardRoute);
 
-app.use((err, req, res, next) => {
-    console.error('Error:', err);
-    
-    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-        res.status(503).json({
-            error: 'Database connection was lost. Please try again.'
-        });
-    } else if (err.code === 'ECONNREFUSED') {
-        res.status(503).json({
-            error: 'Database connection refused. Please try again later.'
-        });
-    } else {
-        res.status(500).json({
-            error: 'An internal server error occurred.'
-        });
-    }
-});
+app.use(express.static("Frontend"));
 
 module.exports = app;
 
